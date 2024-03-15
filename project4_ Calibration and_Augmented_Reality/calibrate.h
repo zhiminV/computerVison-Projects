@@ -18,6 +18,11 @@ using namespace std;
 #ifndef CALIBRETE_H
 #define CALIBRETE_H 
 
-void DetectAndExtractTargetCorners(Mat& frame);
+// Define global variables to store corner and point information
+extern std::vector<std::vector<cv::Point2f>> corner_list;
+extern std::vector<std::vector<cv::Vec3f>> point_list;
+
+void DetectAndExtractTargetCorners(cv::Mat& frame, std::vector<cv::Point2f>& corners);
+void saveCalibrationData(const std::vector<cv::Point2f>& corners);
 
 #endif 

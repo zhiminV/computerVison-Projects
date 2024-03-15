@@ -16,12 +16,29 @@ loading known objects from a CSV file, classifying new feature vectors, displayi
 using namespace cv;
 using namespace std;
 
-void DetectAndExtractTargetCorners(Mat& frame) {
-    Size patternSize(9, 6); // checkerboard has 9 columns and 6 rows of internal corners
+std::vector<std::vector<cv::Point2f>> corner_list;
+std::vector<std::vector<cv::Vec3f>> point_list;
+
+
+void saveCalibrationData(const vector<Point2f>& corners, const Size& patternSize) {
+    // Save the corner locations
+    corner_list.push_back(corners);
+
+    // Create and save the 3D world point set
+    vector<Vec3f> point_set;
+    for (int i = 0; i < corners.size(); ++i) {
+        // Determine the z-coordinate based on the row index of the corner
+        int row_index = i / patternSize.width;  // patternSize.width is the number of columns in the chessboard
+        point_set.push_back(Vec3f(corners[i].x, corners[i].y, row_index));
+    }
+    point_list.push_back(point_set);
+}
+
+
+void DetectAndExtractTargetCorners(cv::Mat& frame, std::vector<cv::Point2f>& corners,const Size& patternSize) {
     Mat grayImage;
     cvtColor(frame, grayImage, COLOR_BGR2GRAY);
 
-    vector<Point2f> corners;
     bool patternFound = findChessboardCorners(grayImage, patternSize, corners, CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
 
     if (patternFound) {

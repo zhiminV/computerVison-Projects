@@ -33,6 +33,9 @@ int main(int argc, char *argv[]) {
 
     cv::namedWindow("Detect Corners", 1); // identifies a window
     cv::Mat frame;
+    std::vector<cv::Point2f> corners;
+    std::vector<cv::Mat> calibration_images;
+    cv::Size patternSize(9, 6); // checkerboard has 9 columns and 6 rows of internal corners
 
     
     while(true) {
@@ -42,7 +45,7 @@ int main(int argc, char *argv[]) {
             break;
         } 
 
-        DetectAndExtractTargetCorners(frame);
+        DetectAndExtractTargetCorners(frame,corners,patternSize);
 
         imshow("Video", frame);
         
@@ -53,8 +56,21 @@ int main(int argc, char *argv[]) {
         }
     
         else if(key == 's'){
+            saveCalibrationData(corners); // Save corners from the last detection
+            // Save the image
+            calibration_images.push_back(frame.clone());
+            imwrite("calibration_image_" + to_string(corner_list.size()) + ".jpg", frame);
+
+            // Print corner coordinates and corresponding 3D world points
+            cout << "Corner list contents:" << endl;
+            for (int i = 0; i < corners.size(); ++i) {
+                cout << "(" << corners[i].x << ", " << corners[i].y << ") ";
+                cout << "World point: (" << point_list.back()[i][0] << ", " << point_list.back()[i][1] << ", " << point_list.back()[i][2] << ")";
+                cout << endl;
+            }
             
-        }
+        } 
+        
     }
 
 delete capdev;
