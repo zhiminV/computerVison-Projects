@@ -12,9 +12,12 @@ The recognition.h file has the prototypes for all of the functions in recognitio
 #include <algorithm>
 #include <opencv2/ml.hpp>
 #include <opencv2/ml/ml.hpp>
-
+using namespace cv;
+using namespace std;
 
 #ifndef CALIBRETE_H
 #define CALIBRETE_H 
+
+void DetectAndExtractTargetCorners(Mat& frame);
 
 #endif 

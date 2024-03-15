@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
                     (int) capdev->get(cv::CAP_PROP_FRAME_HEIGHT));
     printf("Expected size: %d %d\n", refS.width, refS.height);
 
-    cv::namedWindow("Binary Image", 1); // identifies a window
+    cv::namedWindow("Detect Corners", 1); // identifies a window
     cv::Mat frame;
 
     
@@ -41,7 +41,12 @@ int main(int argc, char *argv[]) {
             printf("frame is empty\n");
             break;
         } 
+
+        DetectAndExtractTargetCorners(frame);
+
+        imshow("Video", frame);
         
+
         char key = cv::waitKey(10);
         if( key == 'q') {
             break;

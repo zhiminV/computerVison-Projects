@@ -1,0 +1,3 @@
+/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/build/CMakeFiles/main.dir
+/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/build/CMakeFiles/edit_cache.dir
+/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/build/CMakeFiles/rebuild_cache.dir
