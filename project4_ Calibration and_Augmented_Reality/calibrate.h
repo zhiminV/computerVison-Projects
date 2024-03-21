@@ -3,7 +3,7 @@ Zhimin Liang
 Spring 2024
 CS5330 Project 3
 
-The recognition.h file has the prototypes for all of the functions in recognition.cpp.
+The calibrate.h file has the prototypes for all of the functions in calibrate.cpp.
 */
 
 #include <opencv2/opencv.hpp>
@@ -22,7 +22,9 @@ using namespace std;
 extern std::vector<std::vector<cv::Point2f>> corner_list;
 extern std::vector<std::vector<cv::Vec3f>> point_list;
 
-void DetectAndExtractTargetCorners(cv::Mat& frame, std::vector<cv::Point2f>& corners);
-void saveCalibrationData(const std::vector<cv::Point2f>& corners);
+
+void DetectAndExtractTargetCorners(cv::Mat& frame, std::vector<cv::Point2f>& corners,const Size& patternSize);
+void saveCalibrationData(const vector<Point2f>& corners, const Size& patternSize);
+void saveCalibrationParameters(const cv::Mat& cameraMatrix, const cv::Mat& distCoeffs, const std::string& filename);
 
 #endif 

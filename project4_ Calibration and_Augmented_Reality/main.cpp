@@ -36,6 +36,10 @@ int main(int argc, char *argv[]) {
     std::vector<cv::Point2f> corners;
     std::vector<cv::Mat> calibration_images;
     cv::Size patternSize(9, 6); // checkerboard has 9 columns and 6 rows of internal corners
+    std::vector<cv::Mat> rvecs, tvecs;
+    double initialMatrix[] = {1, 0, (double) frame.cols/2, 0, 1, (double) frame.rows/2, 0, 0, 1};
+    cv::Mat camera_matrix(cv::Size(3,3), CV_64FC1, &initialMatrix);
+    cv::Mat dist_coeffs = cv::Mat::zeros(0, 0, CV_64FC1); 
 
     
     while(true) {
@@ -56,24 +60,37 @@ int main(int argc, char *argv[]) {
         }
     
         else if(key == 's'){
-            saveCalibrationData(corners); // Save corners from the last detection
+            saveCalibrationData(corners,patternSize); // Save corners from the last detection
             // Save the image
             calibration_images.push_back(frame.clone());
             imwrite("calibration_image_" + to_string(corner_list.size()) + ".jpg", frame);
 
-            // Print corner coordinates and corresponding 3D world points
-            cout << "Corner list contents:" << endl;
-            for (int i = 0; i < corners.size(); ++i) {
-                cout << "(" << corners[i].x << ", " << corners[i].y << ") ";
-                cout << "World point: (" << point_list.back()[i][0] << ", " << point_list.back()[i][1] << ", " << point_list.back()[i][2] << ")";
-                cout << endl;
+            // Check for enough calibration frames
+            if(corner_list.size() >= 5) {
+
+                // Print initial camera matrix and distortion coefficients
+                std::cout << "Initial Camera Matrix:\n" << camera_matrix << std::endl;
+                std::cout << "Initial Distortion Coefficients:\n" << dist_coeffs << std::endl;
+
+                // Calibrate the camera
+                double  re_projection_error = cv::calibrateCamera(point_list, corner_list, frame.size(), camera_matrix, dist_coeffs, rvecs, tvecs, cv::CALIB_FIX_ASPECT_RATIO);
+
+                std::cout << "Calibrated Camera Matrix:\n" << camera_matrix << std::endl;
+                std::cout << "Calibrated Distortion Coefficients:\n" << dist_coeffs << std::endl;
+                std::cout << "Re-projection Error: " << re_projection_error << std::endl;
+
+                saveCalibrationParameters(camera_matrix, dist_coeffs, "calibration.csv");
             }
+            else {
+                std::cout << "Not enough calibration frames. Please capture 5 frames." << std::endl;
+            }
+            
             
         } 
         
     }
 
-delete capdev;
+// delete capdev;
 return(0);
 
 }
