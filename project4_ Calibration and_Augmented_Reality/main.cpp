@@ -3,69 +3,99 @@ Zhimin Liang
 Spring 2024
 CS5330 Project 3
 
-Purpose: 
+Purpose: This file contains the main program 
 */
 
 #include <opencv2/opencv.hpp>
+#include <cstdio>
 #include <iostream>
 #include <vector>
-#include <string>
+#include <cstring>
+#include <cstdlib>
 #include "calibrate.h"
+#include <string>
+
 
 int main(int argc, char *argv[]) {
-    cv::VideoCapture capdev(0);
-    if (!capdev.isOpened()) {
-        std::cerr << "Unable to open video device" << std::endl;
-        return -1;
+    cv::VideoCapture *capdev;
+
+    // open the video device
+    capdev = new cv::VideoCapture(0);
+    if( !capdev->isOpened() ) {
+            printf("Unable to open video device\n");
+            return(-1);
     }
 
-    cv::Size refS(capdev.get(cv::CAP_PROP_FRAME_WIDTH), capdev.get(cv::CAP_PROP_FRAME_HEIGHT));
-    std::cout << "Expected size: " << refS.width << " " << refS.height << std::endl;
+    // get some properties of the image
+    cv::Size refS( (int) capdev->get(cv::CAP_PROP_FRAME_WIDTH ),
+                    (int) capdev->get(cv::CAP_PROP_FRAME_HEIGHT));
+    printf("Expected size: %d %d\n", refS.width, refS.height);
 
-    cv::namedWindow("Detect Corners", 1);
+    cv::namedWindow("Detect Corners", 1); // identifies a window
     cv::Mat frame;
     std::vector<cv::Point2f> corners;
+    std::vector<Vec3f> point_set
     std::vector<cv::Mat> calibration_images;
-    cv::Size patternSize(9, 6);
+    cv::Size patternSize(9, 6); // checkerboard has 9 columns and 6 rows of internal corners
     std::vector<cv::Mat> rvecs, tvecs;
-    cv::Mat camera_matrix = (cv::Mat_<double>(3, 3) << 1, 0, refS.width / 2, 0, 1, refS.height / 2, 0, 0, 1);
-    cv::Mat dist_coeffs = cv::Mat::zeros(0, 0, CV_64FC1);
+    double initialMatrix[] = {1, 0, (double) frame.cols/2, 0, 1, (double) frame.rows/2, 0, 0, 1};
+    cv::Mat camera_matrix(cv::Size(3,3), CV_64FC1, &initialMatrix);
+    cv::Mat dist_coeffs = cv::Mat::zeros(0, 0, CV_64FC1); 
 
-    while (true) {
-        capdev >> frame;
-        if (frame.empty()) {
-            std::cerr << "Frame is empty" << std::endl;
+    
+    while(true) {
+        *capdev >> frame; // get a new frame from camera
+        if( frame.empty() ) {
+            printf("frame is empty\n");
             break;
-        }
+        } 
 
-        DetectAndExtractTargetCorners(frame, corners, patternSize);
+        DetectAndExtractTargetCorners(frame,corners,patternSize);
 
         imshow("Video", frame);
+        
 
         char key = cv::waitKey(10);
-        if (key == 'q') {
+        if( key == 'q') {
             break;
-        } else if (key == 's') {
-            saveCalibrationData(corners, patternSize);
+        }
+    
+        else if(key == 's'){
+            saveCalibrationData(point_set,corners,patternSize); // Save corners from the last detection
+            // Save the image
             calibration_images.push_back(frame.clone());
-            imwrite("calibration_image_" + std::to_string(corner_list.size()) + ".jpg", frame);
+            imwrite("calibration_image_" + to_string(corner_list.size()) + ".jpg", frame);
 
-            if (corner_list.size() >= 5) {
+            // Check for enough calibration frames
+            if(corner_list.size() >= 5) {
+
+                // Print initial camera matrix and distortion coefficients
                 std::cout << "Initial Camera Matrix:\n" << camera_matrix << std::endl;
                 std::cout << "Initial Distortion Coefficients:\n" << dist_coeffs << std::endl;
 
-                double re_projection_error = cv::calibrateCamera(point_list, corner_list, frame.size(), camera_matrix, dist_coeffs, rvecs, tvecs, cv::CALIB_FIX_ASPECT_RATIO);
+                // Calibrate the camera
+                double  re_projection_error = cv::calibrateCamera(point_list, corner_list, frame.size(), camera_matrix, dist_coeffs, rvecs, tvecs, cv::CALIB_FIX_ASPECT_RATIO);
 
                 std::cout << "Calibrated Camera Matrix:\n" << camera_matrix << std::endl;
                 std::cout << "Calibrated Distortion Coefficients:\n" << dist_coeffs << std::endl;
                 std::cout << "Re-projection Error: " << re_projection_error << std::endl;
 
                 saveCalibrationParameters(camera_matrix, dist_coeffs, "calibration.csv");
-            } else {
+            }
+            else {
                 std::cout << "Not enough calibration frames. Please capture 5 frames." << std::endl;
             }
-        }
+            
+            
+        } 
+        
     }
 
-    return 0;
+// delete capdev;
+return(0);
+
 }
+
+
+
+    

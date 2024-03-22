@@ -9,7 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/calibrate.cpp" "CMakeFiles/main.dir/calibrate.cpp.o" "gcc" "CMakeFiles/main.dir/calibrate.cpp.o.d"
-  "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/main.cpp" "CMakeFiles/main.dir/main.cpp.o" "gcc" "CMakeFiles/main.dir/main.cpp.o.d"
+  "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/newProgram.cpp" "CMakeFiles/main.dir/newProgram.cpp.o" "gcc" "CMakeFiles/main.dir/newProgram.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

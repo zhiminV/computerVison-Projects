@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/main.dir/calibrate.cpp.o"
   "CMakeFiles/main.dir/calibrate.cpp.o.d"
-  "CMakeFiles/main.dir/main.cpp.o"
-  "CMakeFiles/main.dir/main.cpp.o.d"
+  "CMakeFiles/main.dir/newProgram.cpp.o"
+  "CMakeFiles/main.dir/newProgram.cpp.o.d"
   "main"
   "main.pdb"
 )
