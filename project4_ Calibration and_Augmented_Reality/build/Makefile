@@ -129,29 +129,29 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-Draw3Dobject.o: Draw3Dobject.cpp.o
-.PHONY : Draw3Dobject.o
+DetectRobustFeatures.o: DetectRobustFeatures.cpp.o
+.PHONY : DetectRobustFeatures.o
 
 # target to build an object file
-Draw3Dobject.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Draw3Dobject.cpp.o
-.PHONY : Draw3Dobject.cpp.o
+DetectRobustFeatures.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetectRobustFeatures.cpp.o
+.PHONY : DetectRobustFeatures.cpp.o
 
-Draw3Dobject.i: Draw3Dobject.cpp.i
-.PHONY : Draw3Dobject.i
+DetectRobustFeatures.i: DetectRobustFeatures.cpp.i
+.PHONY : DetectRobustFeatures.i
 
 # target to preprocess a source file
-Draw3Dobject.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Draw3Dobject.cpp.i
-.PHONY : Draw3Dobject.cpp.i
+DetectRobustFeatures.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetectRobustFeatures.cpp.i
+.PHONY : DetectRobustFeatures.cpp.i
 
-Draw3Dobject.s: Draw3Dobject.cpp.s
-.PHONY : Draw3Dobject.s
+DetectRobustFeatures.s: DetectRobustFeatures.cpp.s
+.PHONY : DetectRobustFeatures.s
 
 # target to generate assembly for a file
-Draw3Dobject.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Draw3Dobject.cpp.s
-.PHONY : Draw3Dobject.cpp.s
+DetectRobustFeatures.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/DetectRobustFeatures.cpp.s
+.PHONY : DetectRobustFeatures.cpp.s
 
 calibrate.o: calibrate.cpp.o
 .PHONY : calibrate.o
@@ -186,9 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... main"
-	@echo "... Draw3Dobject.o"
-	@echo "... Draw3Dobject.i"
-	@echo "... Draw3Dobject.s"
+	@echo "... DetectRobustFeatures.o"
+	@echo "... DetectRobustFeatures.i"
+	@echo "... DetectRobustFeatures.s"
 	@echo "... calibrate.o"
 	@echo "... calibrate.i"
 	@echo "... calibrate.s"

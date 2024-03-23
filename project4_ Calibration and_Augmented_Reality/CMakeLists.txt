@@ -12,6 +12,9 @@ include_directories(/usr/local/include)
 # add_executable(main task4AndTask5.cpp calibrate.cpp calibrate.h)
 
 # task 6
-add_executable(main Draw3Dobject.cpp calibrate.cpp calibrate.h)
+# add_executable(main Draw3Dobject.cpp calibrate.cpp calibrate.h)
+
+# task 7
+add_executable(main DetectRobustFeatures.cpp calibrate.cpp calibrate.h)
 
 target_link_libraries(main ${OpenCV_LIBS})

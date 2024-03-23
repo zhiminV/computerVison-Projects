@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/main.dir/Draw3Dobject.cpp.o"
-  "CMakeFiles/main.dir/Draw3Dobject.cpp.o.d"
+  "CMakeFiles/main.dir/DetectRobustFeatures.cpp.o"
+  "CMakeFiles/main.dir/DetectRobustFeatures.cpp.o.d"
   "CMakeFiles/main.dir/calibrate.cpp.o"
   "CMakeFiles/main.dir/calibrate.cpp.o.d"
   "main"

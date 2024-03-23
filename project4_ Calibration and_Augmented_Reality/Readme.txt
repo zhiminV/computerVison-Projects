@@ -3,7 +3,7 @@ Readme file:
     Zhimin Liang
 
 2. Links/URLs to any videos you created and want to submit as part of your report.
-   https://youtu.be/vAmdNZNI7Ms   
+   NO
 
 3. What operating system and IDE you used to run and compile your code.
     Mac, use Visual Studio Code 
@@ -11,6 +11,8 @@ Readme file:
 4.Instructions for running your executables.
     -Open my project in Visual Studio Code
     -Open terminal -> path to my project folder 
+    - uncomment add_executable of the task in CMakeLists.txt 
+    - Then in the terminal
         cd build 
         cmake ..  
         make  

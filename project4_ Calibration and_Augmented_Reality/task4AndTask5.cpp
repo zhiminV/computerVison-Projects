@@ -2,7 +2,7 @@
 Zhimin Liang
 Spring 2024
 CS5330 Project 3
-Purpose: This file contains the main program 
+Purpose: 
 */
 
 #include <opencv2/opencv.hpp>
