@@ -153,29 +153,29 @@ calibrate.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/calibrate.cpp.s
 .PHONY : calibrate.cpp.s
 
-newProgram.o: newProgram.cpp.o
-.PHONY : newProgram.o
+task4AndTask5.o: task4AndTask5.cpp.o
+.PHONY : task4AndTask5.o
 
 # target to build an object file
-newProgram.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/newProgram.cpp.o
-.PHONY : newProgram.cpp.o
+task4AndTask5.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/task4AndTask5.cpp.o
+.PHONY : task4AndTask5.cpp.o
 
-newProgram.i: newProgram.cpp.i
-.PHONY : newProgram.i
+task4AndTask5.i: task4AndTask5.cpp.i
+.PHONY : task4AndTask5.i
 
 # target to preprocess a source file
-newProgram.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/newProgram.cpp.i
-.PHONY : newProgram.cpp.i
+task4AndTask5.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/task4AndTask5.cpp.i
+.PHONY : task4AndTask5.cpp.i
 
-newProgram.s: newProgram.cpp.s
-.PHONY : newProgram.s
+task4AndTask5.s: task4AndTask5.cpp.s
+.PHONY : task4AndTask5.s
 
 # target to generate assembly for a file
-newProgram.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/newProgram.cpp.s
-.PHONY : newProgram.cpp.s
+task4AndTask5.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/task4AndTask5.cpp.s
+.PHONY : task4AndTask5.cpp.s
 
 # Help Target
 help:
@@ -189,9 +189,9 @@ help:
 	@echo "... calibrate.o"
 	@echo "... calibrate.i"
 	@echo "... calibrate.s"
-	@echo "... newProgram.o"
-	@echo "... newProgram.i"
-	@echo "... newProgram.s"
+	@echo "... task4AndTask5.o"
+	@echo "... task4AndTask5.i"
+	@echo "... task4AndTask5.s"
 .PHONY : help
 
 

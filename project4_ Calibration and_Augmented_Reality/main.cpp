@@ -34,13 +34,13 @@ int main(int argc, char *argv[]) {
     cv::namedWindow("Detect Corners", 1); // identifies a window
     cv::Mat frame;
     std::vector<cv::Point2f> corners;
-    std::vector<Vec3f> point_set
     std::vector<cv::Mat> calibration_images;
     cv::Size patternSize(9, 6); // checkerboard has 9 columns and 6 rows of internal corners
     std::vector<cv::Mat> rvecs, tvecs;
     double initialMatrix[] = {1, 0, (double) frame.cols/2, 0, 1, (double) frame.rows/2, 0, 0, 1};
     cv::Mat camera_matrix(cv::Size(3,3), CV_64FC1, &initialMatrix);
-    cv::Mat dist_coeffs = cv::Mat::zeros(0, 0, CV_64FC1); 
+    cv::Mat dist_coeffs = cv::Mat::zeros(5, 1, CV_64FC1); // Assuming 5 distortion coefficients
+
 
     
     while(true) {
@@ -53,7 +53,6 @@ int main(int argc, char *argv[]) {
         DetectAndExtractTargetCorners(frame,corners,patternSize);
 
         imshow("Video", frame);
-        
 
         char key = cv::waitKey(10);
         if( key == 'q') {
@@ -61,7 +60,7 @@ int main(int argc, char *argv[]) {
         }
     
         else if(key == 's'){
-            saveCalibrationData(point_set,corners,patternSize); // Save corners from the last detection
+            saveCalibrationData(corners,patternSize); // Save corners from the last detection
             // Save the image
             calibration_images.push_back(frame.clone());
             imwrite("calibration_image_" + to_string(corner_list.size()) + ".jpg", frame);

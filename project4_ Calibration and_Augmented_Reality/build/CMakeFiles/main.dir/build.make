@@ -69,19 +69,19 @@ include CMakeFiles/main.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/main.dir/flags.make
 
-CMakeFiles/main.dir/newProgram.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/newProgram.cpp.o: /Users/lzm/Desktop/CS5330/project4_\ Calibration\ and_Augmented_Reality/newProgram.cpp
-CMakeFiles/main.dir/newProgram.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/newProgram.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/newProgram.cpp.o -MF CMakeFiles/main.dir/newProgram.cpp.o.d -o CMakeFiles/main.dir/newProgram.cpp.o -c "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/newProgram.cpp"
+CMakeFiles/main.dir/task4AndTask5.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/task4AndTask5.cpp.o: /Users/lzm/Desktop/CS5330/project4_\ Calibration\ and_Augmented_Reality/task4AndTask5.cpp
+CMakeFiles/main.dir/task4AndTask5.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/task4AndTask5.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/task4AndTask5.cpp.o -MF CMakeFiles/main.dir/task4AndTask5.cpp.o.d -o CMakeFiles/main.dir/task4AndTask5.cpp.o -c "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/task4AndTask5.cpp"
 
-CMakeFiles/main.dir/newProgram.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/newProgram.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/newProgram.cpp" > CMakeFiles/main.dir/newProgram.cpp.i
+CMakeFiles/main.dir/task4AndTask5.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/task4AndTask5.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/task4AndTask5.cpp" > CMakeFiles/main.dir/task4AndTask5.cpp.i
 
-CMakeFiles/main.dir/newProgram.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/newProgram.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/newProgram.cpp" -o CMakeFiles/main.dir/newProgram.cpp.s
+CMakeFiles/main.dir/task4AndTask5.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/task4AndTask5.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/lzm/Desktop/CS5330/project4_ Calibration and_Augmented_Reality/task4AndTask5.cpp" -o CMakeFiles/main.dir/task4AndTask5.cpp.s
 
 CMakeFiles/main.dir/calibrate.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/calibrate.cpp.o: /Users/lzm/Desktop/CS5330/project4_\ Calibration\ and_Augmented_Reality/calibrate.cpp
@@ -99,13 +99,13 @@ CMakeFiles/main.dir/calibrate.cpp.s: cmake_force
 
 # Object files for target main
 main_OBJECTS = \
-"CMakeFiles/main.dir/newProgram.cpp.o" \
+"CMakeFiles/main.dir/task4AndTask5.cpp.o" \
 "CMakeFiles/main.dir/calibrate.cpp.o"
 
 # External object files for target main
 main_EXTERNAL_OBJECTS =
 
-main: CMakeFiles/main.dir/newProgram.cpp.o
+main: CMakeFiles/main.dir/task4AndTask5.cpp.o
 main: CMakeFiles/main.dir/calibrate.cpp.o
 main: CMakeFiles/main.dir/build.make
 main: /usr/local/lib/libopencv_gapi.4.9.0.dylib

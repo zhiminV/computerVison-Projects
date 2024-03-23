@@ -24,7 +24,7 @@ extern std::vector<std::vector<cv::Vec3f>> point_list;
 
 
 void DetectAndExtractTargetCorners(cv::Mat& frame, std::vector<cv::Point2f>& corners,const Size& patternSize);
-void saveCalibrationData(vector<Vec3f> point_set, const vector<Point2f>& corners, const Size& patternSize);
+void saveCalibrationData(const vector<Point2f>& corners, const Size& patternSize) ;
 void saveCalibrationParameters(const cv::Mat& cameraMatrix, const cv::Mat& distCoeffs, const std::string& filename);
 
 #endif 

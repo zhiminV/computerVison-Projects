@@ -5,6 +5,10 @@ project(Project4)
 find_package(OpenCV REQUIRED)
 include_directories(/usr/local/include)
 
+#task 1-3 
 # add_executable(main main.cpp calibrate.cpp calibrate.h)
-add_executable(main newProgram.cpp calibrate.cpp calibrate.h)
+
+# task 4 and task 5
+add_executable(main task4AndTask5.cpp calibrate.cpp calibrate.h)
+
 target_link_libraries(main ${OpenCV_LIBS})
