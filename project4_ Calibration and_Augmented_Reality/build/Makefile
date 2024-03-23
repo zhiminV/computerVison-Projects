@@ -129,6 +129,30 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+Draw3Dobject.o: Draw3Dobject.cpp.o
+.PHONY : Draw3Dobject.o
+
+# target to build an object file
+Draw3Dobject.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Draw3Dobject.cpp.o
+.PHONY : Draw3Dobject.cpp.o
+
+Draw3Dobject.i: Draw3Dobject.cpp.i
+.PHONY : Draw3Dobject.i
+
+# target to preprocess a source file
+Draw3Dobject.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Draw3Dobject.cpp.i
+.PHONY : Draw3Dobject.cpp.i
+
+Draw3Dobject.s: Draw3Dobject.cpp.s
+.PHONY : Draw3Dobject.s
+
+# target to generate assembly for a file
+Draw3Dobject.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Draw3Dobject.cpp.s
+.PHONY : Draw3Dobject.cpp.s
+
 calibrate.o: calibrate.cpp.o
 .PHONY : calibrate.o
 
@@ -153,30 +177,6 @@ calibrate.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/calibrate.cpp.s
 .PHONY : calibrate.cpp.s
 
-task4AndTask5.o: task4AndTask5.cpp.o
-.PHONY : task4AndTask5.o
-
-# target to build an object file
-task4AndTask5.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/task4AndTask5.cpp.o
-.PHONY : task4AndTask5.cpp.o
-
-task4AndTask5.i: task4AndTask5.cpp.i
-.PHONY : task4AndTask5.i
-
-# target to preprocess a source file
-task4AndTask5.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/task4AndTask5.cpp.i
-.PHONY : task4AndTask5.cpp.i
-
-task4AndTask5.s: task4AndTask5.cpp.s
-.PHONY : task4AndTask5.s
-
-# target to generate assembly for a file
-task4AndTask5.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/task4AndTask5.cpp.s
-.PHONY : task4AndTask5.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +186,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... main"
+	@echo "... Draw3Dobject.o"
+	@echo "... Draw3Dobject.i"
+	@echo "... Draw3Dobject.s"
 	@echo "... calibrate.o"
 	@echo "... calibrate.i"
 	@echo "... calibrate.s"
-	@echo "... task4AndTask5.o"
-	@echo "... task4AndTask5.i"
-	@echo "... task4AndTask5.s"
 .PHONY : help
 
 

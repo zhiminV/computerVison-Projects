@@ -12,48 +12,66 @@ Purpose: Implementation of Task 6 - Creating a Virtual Object (Cylinder)
 using namespace cv;
 using namespace std;
 
-// Function to draw a cylinder in 3D space
-void drawCylinder(Mat& frame, const Mat& cameraMatrix, const Mat& distortionCoefficients,
-                  const Mat& rvec, const Mat& tvec, double radius, double height,
-                  const Scalar& color = Scalar(255, 0, 0), int thickness = 2) {
-    // Define points for the base circle
-    vector<Point3f> baseCirclePoints;
-    int sides = 50; // Number of sides of the cylinder (higher value for smoother circle)
-    for (int i = 0; i < sides; ++i) {
-        float angle = (float)i * 2 * CV_PI / sides;
-        float x = radius * cos(angle);
-        float y = radius * sin(angle);
-        baseCirclePoints.push_back(Point3f(x, y, 0));
-    }
+// Function to draw a cube given its vertices
+void drawCube(Mat& frame, const vector<Point2f>& projectedPoints) {
+    // Connect the vertices to form the cube
+    // Front face
+    line(frame, projectedPoints[0], projectedPoints[1], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[1], projectedPoints[2], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[2], projectedPoints[3], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[3], projectedPoints[0], Scalar(0, 0, 255), 2);
+    // Back face
+    line(frame, projectedPoints[4], projectedPoints[5], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[5], projectedPoints[6], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[6], projectedPoints[7], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[7], projectedPoints[4], Scalar(0, 0, 255), 2);
+    // Connect front and back faces
+    line(frame, projectedPoints[0], projectedPoints[4], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[1], projectedPoints[5], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[2], projectedPoints[6], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[3], projectedPoints[7], Scalar(0, 0, 255), 2);
+}
 
-    // Project base circle points onto the image plane
+void drawPyramid(Mat& frame, const Mat& rvec, const Mat& tvec, const Mat& cameraMatrix, const Mat& distortionCoefficients) {
+    // Define the vertices of the pyramid
+    vector<Point3f> pyramidPoints;
+    pyramidPoints.push_back(Point3f(0, 0, 0)); // Base center
+    pyramidPoints.push_back(Point3f(-1, -1, 0)); // Base vertices
+    pyramidPoints.push_back(Point3f(1, -1, 0));
+    pyramidPoints.push_back(Point3f(1, 1, 0));
+    pyramidPoints.push_back(Point3f(-1, 1, 0));
+    pyramidPoints.push_back(Point3f(0, 0, 2)); // Apex
+
+    // Project pyramid points onto image plane
     vector<Point2f> projectedPoints;
-    projectPoints(baseCirclePoints, rvec, tvec, cameraMatrix, distortionCoefficients, projectedPoints);
+    projectPoints(pyramidPoints, rvec, tvec, cameraMatrix, distortionCoefficients, projectedPoints);
 
-    // Draw base circle
-    for (int i = 0; i < sides - 1; ++i) {
-        line(frame, projectedPoints[i], projectedPoints[i + 1], color, thickness);
-    }
-    line(frame, projectedPoints[sides - 1], projectedPoints[0], color, thickness);
+    // Draw lines to form the pyramid
+    line(frame, projectedPoints[1], projectedPoints[2], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[2], projectedPoints[3], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[3], projectedPoints[4], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[4], projectedPoints[1], Scalar(0, 0, 255), 2);
 
-    // Project top circle points by translating along z-axis by height
-    vector<Point3f> topCirclePoints;
-    for (const auto& point : baseCirclePoints) {
-        topCirclePoints.push_back(Point3f(point.x, point.y, height));
-    }
-    vector<Point2f> projectedTopPoints;
-    projectPoints(topCirclePoints, rvec, tvec, cameraMatrix, distortionCoefficients, projectedTopPoints);
+    line(frame, projectedPoints[0], projectedPoints[1], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[0], projectedPoints[2], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[0], projectedPoints[3], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[0], projectedPoints[4], Scalar(0, 0, 255), 2);
 
-    // Draw top circle
-    for (int i = 0; i < sides - 1; ++i) {
-        line(frame, projectedPoints[i], projectedTopPoints[i], color, thickness);
-    }
-    line(frame, projectedPoints[sides - 1], projectedTopPoints[sides - 1], color, thickness);
+    line(frame, projectedPoints[5], projectedPoints[1], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[5], projectedPoints[2], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[5], projectedPoints[3], Scalar(0, 0, 255), 2);
+    line(frame, projectedPoints[5], projectedPoints[4], Scalar(0, 0, 255), 2);
+}
+    
+// Function to draw a cylinder given its vertices
+void drawCylinder(Mat& frame, const vector<Point2f>& projectedPoints) {
+    // Draw the base of the cylinder
+    circle(frame, projectedPoints[0], 5, Scalar(0, 255, 0), FILLED); // Center of the base
+    circle(frame, projectedPoints[1], 5, Scalar(0, 255, 0), FILLED); // Point on the circumference
 
-    // Draw vertical lines connecting base and top circles
-    for (int i = 0; i < sides; ++i) {
-        line(frame, projectedPoints[i], projectedTopPoints[i], color, thickness);
-    }
+    // Draw lines connecting the base to the top of the cylinder
+    line(frame, projectedPoints[0], projectedPoints[2], Scalar(0, 255, 0), 2);
+    line(frame, projectedPoints[1], projectedPoints[3], Scalar(0, 255, 0), 2);
 }
 
 int main() {
@@ -88,23 +106,63 @@ int main() {
         Mat grayImage;
         cvtColor(frame, grayImage, COLOR_BGR2GRAY);
 
-        // Dummy values for rotation and translation vectors (not used here)
-        Mat rvec = Mat::zeros(3, 1, CV_64F);
-        Mat tvec = Mat::zeros(3, 1, CV_64F);
+        // Detect checkerboard corners
+        Size patternSize(9, 6); // Assuming a 9x6 checkerboard pattern
+        vector<Point2f> corners;
+        bool patternFound = findChessboardCorners(grayImage, patternSize, corners,
+                                                   CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
 
-        // Draw a cylinder
-        drawCylinder(frame, cameraMatrix, distortionCoefficients, rvec, tvec, 50, 100);
+        // Define 3D object points for the calibration target
+        vector<Point3f> objectPoints;
+        for (int i = 0; i < patternSize.height; ++i) {
+            for (int j = 0; j < patternSize.width; ++j) {
+                objectPoints.push_back(Point3f(j, i, 0)); // Assuming the calibration target lies in the XY plane
+            }
+        }
+        if (patternFound) {
+            // Refine corner positions
+            cornerSubPix(grayImage, corners, Size(11, 11), Size(-1, -1),
+                         TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 30, 0.1));
+
+            // Solve PnP to estimate pose
+            Mat rvec, tvec;
+            solvePnP(objectPoints, corners, cameraMatrix, distortionCoefficients, rvec, tvec);
+
+            // Project 3D cube onto image plane
+            vector<Point3f> cubePoints = {
+                Point3f(-1, -1, -1), Point3f(1, -1, -1), Point3f(1, 1, -1), Point3f(-1, 1, -1),
+                Point3f(-1, -1, 1), Point3f(1, -1, 1), Point3f(1, 1, 1), Point3f(-1, 1, 1)
+            };
+            vector<Point2f> projectedCubePoints;
+            projectPoints(cubePoints, rvec, tvec, cameraMatrix, distortionCoefficients, projectedCubePoints);
+            drawCube(frame, projectedCubePoints);
+
+            // Project 3D cylinder onto image plane
+            vector<Point3f> cylinderPoints = {
+                Point3f(0, 0, 0), Point3f(1, 0, 0), Point3f(0, 0, 2), Point3f(1, 0, 2)
+            };
+            vector<Point2f> projectedCylinderPoints;
+            projectPoints(cylinderPoints, rvec, tvec, cameraMatrix, distortionCoefficients, projectedCylinderPoints);
+            drawCylinder(frame, projectedCylinderPoints);
+
+             // Project 3D pyramid onto image plane
+             drawPyramid(frame, rvec, tvec, cameraMatrix, distortionCoefficients);
+
+        }
+
 
         // Show frame
         imshow("Frame", frame);
 
         // Exit loop if 'q' is pressed
-        if (waitKey(1) == 'q') break;
+        if (waitKey(1) == 'q') {
+            break;
+        }
     }
 
     // Release video capture and close windows
     cap.release();
     destroyAllWindows();
-
+    
     return 0;
 }
