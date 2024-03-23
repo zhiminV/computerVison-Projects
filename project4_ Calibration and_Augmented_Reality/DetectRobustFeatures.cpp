@@ -1,3 +1,10 @@
+/*
+Zhimin Liang
+Spring 2024
+CS5330 Project 4
+Purpose: This program demonstrates the detection of Harris corners in a live video stream using OpenCV. Harris corners are key feature points in an image that can be used for various computer vision tasks such as image alignment, object detection, and tracking.
+
+*/
 #include <opencv2/opencv.hpp>
 #include <iostream>
 

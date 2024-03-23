@@ -1,7 +1,7 @@
 /*
 Zhimin Liang
 Spring 2024
-CS5330 Project 3
+CS5330 Project 4
 
 The calibrate.h file has the prototypes for all of the functions in calibrate.cpp.
 */

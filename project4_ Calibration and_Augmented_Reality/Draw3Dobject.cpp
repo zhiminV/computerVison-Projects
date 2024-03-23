@@ -1,8 +1,9 @@
 /*
 Zhimin Liang
 Spring 2024
-CS5330 Project 3
-Purpose: Implementation of Task 6 - Creating a Virtual Object (Cylinder)
+CS5330 Project 4
+Purpose: This file contains functions for drawing 3D shapes (cube, cylinder, pyramid) onto a frame captured from a video stream, based on the detected pose of a calibration target.
+
 */
 
 #include <opencv2/opencv.hpp>
@@ -12,7 +13,16 @@ Purpose: Implementation of Task 6 - Creating a Virtual Object (Cylinder)
 using namespace cv;
 using namespace std;
 
-// Function to draw a cube given its vertices
+/*
+Function: drawCube
+Description: This function draws a 3D cube onto the input frame based on the projected points of its vertices. It connects the vertices to form the cube, drawing both front and back faces, and then connects the corresponding vertices of the front and back faces to complete the cube.
+
+Parameters:
+- frame: Input frame (image) onto which the cube will be drawn.
+- projectedPoints: Vector containing the 2D projected points of the vertices of the cube.
+
+Returns: None
+*/
 void drawCube(Mat& frame, const vector<Point2f>& projectedPoints) {
     // Connect the vertices to form the cube
     // Front face
@@ -32,6 +42,19 @@ void drawCube(Mat& frame, const vector<Point2f>& projectedPoints) {
     line(frame, projectedPoints[3], projectedPoints[7], Scalar(0, 0, 255), 2);
 }
 
+/*
+Function: drawPyramid
+Description: This function draws a 3D pyramid onto the input frame based on the projected points of its vertices. It connects the vertices to form the triangular faces of the pyramid and then connects the apex with each of the base vertices.
+
+Parameters:
+- frame: Input frame (image) onto which the pyramid will be drawn.
+- rvec: Rotation vector obtained from pose estimation.
+- tvec: Translation vector obtained from pose estimation.
+- cameraMatrix: Camera matrix obtained from camera calibration.
+- distortionCoefficients: Distortion coefficients obtained from camera calibration.
+
+Returns: None
+*/
 void drawPyramid(Mat& frame, const Mat& rvec, const Mat& tvec, const Mat& cameraMatrix, const Mat& distortionCoefficients) {
     // Define the vertices of the pyramid
     vector<Point3f> pyramidPoints;
@@ -63,7 +86,16 @@ void drawPyramid(Mat& frame, const Mat& rvec, const Mat& tvec, const Mat& camera
     line(frame, projectedPoints[5], projectedPoints[4], Scalar(0, 0, 255), 2);
 }
     
-// Function to draw a cylinder given its vertices
+/*
+Function: drawCylinder
+Description: This function draws a 3D cylinder onto the input frame based on the projected points of its vertices. It draws the base of the cylinder and connects it to the top using lines.
+
+Parameters:
+- frame: Input frame (image) onto which the cylinder will be drawn.
+- projectedPoints: Vector containing the 2D projected points of the vertices of the cylinder.
+
+Returns: None
+*/
 void drawCylinder(Mat& frame, const vector<Point2f>& projectedPoints) {
     // Draw the base of the cylinder
     circle(frame, projectedPoints[0], 5, Scalar(0, 255, 0), FILLED); // Center of the base

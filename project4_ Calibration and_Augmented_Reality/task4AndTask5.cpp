@@ -1,8 +1,9 @@
 /*
 Zhimin Liang
 Spring 2024
-CS5330 Project 3
-Purpose: 
+CS5330 Project 4
+
+Purpose: This program demonstrates the use of camera calibration parameters to estimate the pose of a calibration target in a video stream and project 3D axes onto the image plane to visualize the orientation of the target.
 */
 
 #include <opencv2/opencv.hpp>
