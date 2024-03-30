@@ -2,9 +2,13 @@
 # Spring 2024
 # 5330 Project 5
 
-# Purpose:
-
-# Your name here and a short header
+"""
+Purpose:
+This script is designed to implement and train a deep neural network model using the MNIST dataset.
+The project aims to accurately recognize and classify handwritten digits through the application
+of convolutional neural networks (CNNs). It covers data preprocessing, model architecture design,
+training, and evaluation. Additionally, it provides functionality to save and load the trained model.
+"""
 
 # import statements
 import sys
@@ -141,6 +145,16 @@ def plot_first_six_digits(test_set):
 
     plt.tight_layout()
     plt.show()
+def save_model(model, file_path='model.pth'):
+    """
+    Save a PyTorch model's state dictionary to a file.
+
+    Args:
+    - model: The trained model to be saved.
+    - file_path: Path to the file where the model state dictionary should be saved.
+    """
+    torch.save(model.state_dict(), file_path)
+
 
 def main(argv):
     """
@@ -153,7 +167,7 @@ def main(argv):
 
     # Task 1_A Get the MNIST digit data set
     mnist_test_set = get_mnist_test_set()
-    plot_first_six_digits(mnist_test_set)
+    # plot_first_six_digits(mnist_test_set)
 
     #Task 1_C Train the model
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
@@ -168,6 +182,8 @@ def main(argv):
     plot_accuracy(train_accuracy, test_accuracy)
 
     #Task 1_D 
+    model = save_model(model,'DeepNetwork.pth')
+    print("Model loaded successfully.")
 
 if __name__ == "__main__":
     main(sys.argv)
