@@ -7,7 +7,7 @@ Purpose:
 This script is designed to implement and train a deep neural network model using the MNIST dataset.
 The project aims to accurately recognize and classify handwritten digits through the application
 of convolutional neural networks (CNNs). It covers data preprocessing, model architecture design,
-training, and evaluation. Additionally, it provides functionality to save and load the trained model.
+training, and evaluation. Additionally, it provides functionality to save the trained model.
 """
 
 # import statements
