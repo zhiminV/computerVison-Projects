@@ -18,6 +18,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchvision.transforms as transforms
+import random
 
 # class definitions
 class MyNetwork(nn.Module):
@@ -124,18 +125,21 @@ def get_mnist_test_set():
     mnist_test = datasets.MNIST(root='./data', train=False, download=True)
     return mnist_test
 
-def plot_first_six_digits(test_set):
+def plot_random_six_digits(test_set):
     """
-    Plot the first six example digits from the test set.
+    Plot six random example digits from the test set.
 
     Args:
     - test_set: MNIST test dataset
     """
-    # Extract the first six images and their labels
-    images = test_set.data[:6]
-    labels = test_set.targets[:6]
+    # Randomly select six indices
+    indices = random.sample(range(len(test_set)), 6)
 
-    # Plot the first six example digits
+    # Extract the images and labels corresponding to the selected indices
+    images = [test_set[i][0] for i in indices]
+    labels = [test_set[i][1] for i in indices]
+
+    # Plot the six randomly selected example digits
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(10, 5))
 
     for i, ax in enumerate(axes.flat):
@@ -145,6 +149,9 @@ def plot_first_six_digits(test_set):
 
     plt.tight_layout()
     plt.show()
+
+
+
 def save_model(model, file_path='model.pth'):
     """
     Save a PyTorch model's state dictionary to a file.
@@ -167,7 +174,7 @@ def main(argv):
 
     # Task 1_A Get the MNIST digit data set
     mnist_test_set = get_mnist_test_set()
-    # plot_first_six_digits(mnist_test_set)
+    plot_random_six_digits(mnist_test_set)
 
     #Task 1_C Train the model
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
