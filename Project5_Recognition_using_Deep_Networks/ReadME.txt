@@ -11,8 +11,9 @@ Readme file:
 4.Instructions for running your executables.
     -Open my project in Visual Studio Code
     -Open terminal -> path to my project folder 
-   -For task1 A-D: run Python3 DeepNetwork.py
+    -For task1 A-D: run Python3 DeepNetwork.py
     -For task1 E: run Python3 TestModle.py
+    -For task1 F: run Python3 TestWithNewInput.py
 
 5.Instructions for testing any extensions you completed.
     No
