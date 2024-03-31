@@ -12,15 +12,15 @@ training, and evaluation. Additionally, it provides functionality to save and lo
 
 # import statements
 import sys
+import random
 import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchvision.transforms as transforms
-import random
 
-# class definitions
+# Class definitions
 class MyNetwork(nn.Module):
     def __init__(self):
         super(MyNetwork, self).__init__()
@@ -29,23 +29,22 @@ class MyNetwork(nn.Module):
         self.conv2 = nn.Conv2d(in_channels=10, out_channels=20, kernel_size=5)
         self.dropout = nn.Dropout(p=0.5)
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.fc1 = nn.Linear(in_features=20*4*4, out_features=50)
+        self.fc1 = nn.Linear(in_features=320, out_features=50)
         self.fc2 = nn.Linear(in_features=50, out_features=10)
 
-    # Task 1_B Build a network model
     def forward(self, x):
-        x = self.pool1(torch.relu(self.conv1(x)))
-        x = self.pool2(torch.relu(self.conv2(x)))
-        x = x.view(-1, 20*4*4)  # Flatten the output from convolutions
-        x = torch.relu(self.fc1(x))
+        x = self.pool1(nn.functional.relu(self.conv1(x)))
+        x = self.pool2(nn.functional.relu(self.conv2(x)))
+        x = x.view(-1, 320)
+        x = nn.functional.relu(self.fc1(x))
         x = self.fc2(self.dropout(x))
-        return torch.log_softmax(x, dim=1)
-    
+        return nn.functional.log_softmax(x, dim=1)
 
-#task 1_C  Train the model
+# Training function with improvements
 def train_model(model, train_loader, test_loader, num_epochs=5, learning_rate=0.001):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
     
     train_losses = []
     test_losses = []
@@ -59,6 +58,7 @@ def train_model(model, train_loader, test_loader, num_epochs=5, learning_rate=0.
         total_train = 0
         running_loss = 0.0
         for inputs, labels in train_loader:
+            inputs = inputs + torch.randn_like(inputs) * 0.1  # Adding random noise for data augmentation
             optimizer.zero_grad()
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -86,7 +86,8 @@ def train_model(model, train_loader, test_loader, num_epochs=5, learning_rate=0.
                 running_loss += loss.item()
             test_losses.append(running_loss / len(test_loader))
             test_accuracy.append(correct_test / total_test)
-
+        
+        scheduler.step()  # Adjust learning rate
         print(f'Epoch [{epoch+1}/{num_epochs}], '
               f'Train Loss: {train_losses[-1]:.4f}, '
               f'Train Acc: {train_accuracy[-1]*100:.2f}%, '
@@ -113,71 +114,34 @@ def plot_accuracy(train_accuracy, test_accuracy):
     plt.legend()
     plt.show()
 
-
-# useful functions with a comment for each function
 def get_mnist_test_set():
-    """
-    Load the MNIST test set from torchvision.datasets.MNIST.
-
-    Returns:
-    - mnist_test: MNIST test dataset
-    """
     mnist_test = datasets.MNIST(root='./data', train=False, download=True)
     return mnist_test
 
 def plot_random_six_digits(test_set):
-    """
-    Plot six random example digits from the test set.
-
-    Args:
-    - test_set: MNIST test dataset
-    """
-    # Randomly select six indices
     indices = random.sample(range(len(test_set)), 6)
-
-    # Extract the images and labels corresponding to the selected indices
     images = [test_set[i][0] for i in indices]
     labels = [test_set[i][1] for i in indices]
-
-    # Plot the six randomly selected example digits
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(10, 5))
-
     for i, ax in enumerate(axes.flat):
         ax.imshow(images[i], cmap='gray')
         ax.set_title(f'Label: {labels[i]}')
         ax.axis('off')
-
     plt.tight_layout()
     plt.show()
 
-
-
 def save_model(model, file_path='model.pth'):
-    """
-    Save a PyTorch model's state dictionary to a file.
-
-    Args:
-    - model: The trained model to be saved.
-    - file_path: Path to the file where the model state dictionary should be saved.
-    """
     torch.save(model.state_dict(), file_path)
 
-
 def main(argv):
-    """
-    Main function to execute the code.
-
-    Args:
-    - argv: command line arguments
-    """
-    # handle any command line arguments in argv
-
-    # Task 1_A Get the MNIST digit data set
     mnist_test_set = get_mnist_test_set()
     plot_random_six_digits(mnist_test_set)
 
-    #Task 1_C Train the model
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+    transform = transforms.Compose([
+        transforms.RandomRotation(10),  # Randomly rotate images by 10 degrees
+        transforms.ToTensor(),
+        transforms.Normalize((0.5,), (0.5,))
+    ])
     train_dataset = datasets.MNIST(root='./data', train=True, transform=transform, download=True)
     test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=True)
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=True)
@@ -188,9 +152,8 @@ def main(argv):
     plot_errors(train_losses, test_losses)
     plot_accuracy(train_accuracy, test_accuracy)
 
-    #Task 1_D 
-    model = save_model(model,'DeepNetwork.pth')
-    print("Model loaded successfully.")
+    save_model(model, 'DeepNetwork.pth')
+    print("Model saved successfully.")
 
 if __name__ == "__main__":
     main(sys.argv)
