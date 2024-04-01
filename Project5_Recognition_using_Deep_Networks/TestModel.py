@@ -51,7 +51,7 @@ def plot_predictions(model, test_loader):
             outputs = model(inputs)
             predicted = torch.argmax(outputs, dim=1)
             ax = axes[i // 3, i % 3]
-            ax.imshow(inputs.squeeze().numpy(), cmap='gray')  # Modify this line
+            ax.imshow(inputs.squeeze().numpy(), cmap='gray')  
             ax.set_title(f'Pred: {predicted.item()}, Actual: {labels.item()}')
             ax.axis('off')
     plt.tight_layout()
