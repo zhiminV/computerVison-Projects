@@ -83,6 +83,29 @@ def plot_training_loss(losses):
     plt.title('Training Loss')
     plt.show()
 
+def save_model(model, file_path='model.pth'):
+    torch.save(model.state_dict(), file_path)
+
+# def test_symbols(model, test_loader):
+#     correct = 0
+#     total = 0
+#     with torch.no_grad():
+#         # fig, axes = plt.subplots(3, 3, figsize=(10, 6))
+#         fig, axes = plt.subplots(3, 3, figsize=(10, 4))
+#         for i, (data, ax_row) in enumerate(zip(test_loader, axes)):
+#             images, labels = data
+#             outputs = model(images)
+#             _, predicted = torch.max(outputs.data, 1)
+#             total += labels.size(0)
+#             correct += (predicted == labels).sum().item()
+#             for image, label, pred, ax in zip(images, labels, predicted, ax_row):
+#                 ax.imshow(image.squeeze().numpy(), cmap='gray')
+#                 ax.set_title(f'Predicted: {test_loader.dataset.classes[pred]}, True: {test_loader.dataset.classes[label]}')
+#                 ax.axis('off')
+#         plt.tight_layout()
+#         plt.show()
+
+#     print('Accuracy of the network on the test images: %d %%' % (100 * correct / total))
 
 def main():
     # Step 1: Load pre-trained model
@@ -110,7 +133,7 @@ def main():
         batch_size=5,
         shuffle=True
     )
-
+    
     # Step 7: Train the modified network on Greek letter dataset
     losses = train_model(model, greek_train, epochs=10)
 
@@ -120,6 +143,19 @@ def main():
     # Step 9: Print out the modified network
     print("Modified network structure:")
     print(model)
+
+    save_model(model, "testGreek.pth")
+    print("New Model saved successfully.")
+
+
+    # # Step 10: Test handwritten symbols
+    # testing_set_path = 'greek_test'
+    # greek_test = torch.utils.data.DataLoader(
+    #     torchvision.datasets.ImageFolder(testing_set_path, transform=transform),
+    #     batch_size=5,
+    #     shuffle=True
+    # )
+    # test_symbols(model, greek_test)
 
 
 if __name__ == "__main__":
