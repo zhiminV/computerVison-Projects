@@ -14,6 +14,8 @@ Readme file:
     -For task1 A-D: run Python3 DeepNetwork.py
     -For task1 E: run Python3 TestModle.py
     -For task1 F: run Python3 TestWithNewInput.py
+    -For task 2A,B: run Python3 AnalyzeLayer.py
+    -For task 3: run python3 TrainGreekLetter.py
 
 5.Instructions for testing any extensions you completed.
     No
