@@ -4,6 +4,8 @@
 
 """
 Purpose:
+This script is designed for evaluating and visualizing the performance of a trained deep neural network model on the MNIST test dataset. 
+It loads a pre-trained model, evaluates its performance on the first 10 examples from the test set, and plots the predictions alongside the actual digits for the first 9 examples.
 
 """
 import torch
@@ -24,6 +26,13 @@ def load_model(model_path='DeepNetwork.pth'):
 def evaluate_model(model, test_loader):
     """
     Evaluate the model on the first 10 examples from the test set.
+
+    Parameters:
+    - model: The trained neural network model.
+    - test_loader: DataLoader for the test dataset.
+
+    Returns:
+    None.
     """
     model.eval()  # Set the model to evaluation mode
     with torch.no_grad():
@@ -41,6 +50,13 @@ def evaluate_model(model, test_loader):
 def plot_predictions(model, test_loader):
     """
     Plot the first 9 digits of the test set with predictions.
+
+    Parameters:
+    - model: The trained neural network model.
+    - test_loader: DataLoader for the test dataset.
+
+    Returns:
+    None.
     """
     fig, axes = plt.subplots(3, 3, figsize=(8, 8))
     model.eval()  # Set the model to evaluation mode

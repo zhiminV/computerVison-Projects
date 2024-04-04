@@ -4,6 +4,8 @@
 
 """
 Purpose:
+This script is designed to perform inference on handwritten digit images using a trained neural network model.
+It loads a pre-trained model, preprocesses the images, performs inference, and displays the results.
 
 """
 
@@ -14,14 +16,30 @@ import matplotlib.pyplot as plt
 from DeepNetwork import MyNetwork  
 
 def load_model(model_path='DeepNetwork.pth'):
-    """Load the trained model."""
+    """
+    Load the trained model.
+
+    Parameters:
+    - model_path (str): Path to the saved model file (default: 'DeepNetwork.pth').
+
+    Returns:
+    The loaded neural network model.
+    """
     model = MyNetwork()
     model.load_state_dict(torch.load(model_path))
     model.eval()
     return model
 
 def preprocess_images(image_paths):
-    """Preprocess the handwritten digit images."""
+    """
+    Preprocess the handwritten digit images.
+
+    Parameters:
+    - image_paths (list): List of file paths to the handwritten digit images.
+
+    Returns:
+    A list of preprocessed digit images.
+    """
     transform = transforms.Compose([
         transforms.Grayscale(),
         transforms.Resize((28, 28)),
@@ -36,7 +54,16 @@ def preprocess_images(image_paths):
     return handwritten_digits
 
 def perform_inference(model, handwritten_digits):
-    """Perform inference on the handwritten digit images."""
+    """
+    Perform inference on the handwritten digit images.
+
+    Parameters:
+    - model: The trained neural network model.
+    - handwritten_digits (list): List of preprocessed digit images.
+
+    Returns:
+    A list of predicted labels for the handwritten digit images.
+    """
     predicted_labels = []
     with torch.no_grad():
         for digit_image in handwritten_digits:
@@ -46,7 +73,16 @@ def perform_inference(model, handwritten_digits):
     return predicted_labels
 
 def display_results(handwritten_digits, predicted_labels):
-    """Display the handwritten digit images along with their predicted labels."""
+    """
+    Display the handwritten digit images along with their predicted labels.
+
+    Parameters:
+    - handwritten_digits (list): List of preprocessed digit images.
+    - predicted_labels (list): List of predicted labels for the handwritten digit images.
+
+    Returns:
+    None.
+    """
     fig, axes = plt.subplots(2, 5, figsize=(10, 4))
     for i, ax in enumerate(axes.flat):
         ax.imshow(handwritten_digits[i].squeeze().numpy(), cmap='gray')

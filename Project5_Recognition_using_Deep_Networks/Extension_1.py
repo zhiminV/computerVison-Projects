@@ -3,7 +3,9 @@
 # 5330 Project 5
 
 """
-Purpose:
+Purpose:The purpose of the code is to analyze the filters of the first convolutional layer in a pre-trained VGG16 model. 
+This involves loading the pre-trained VGG16 model, examining its structure to understand the layer names and dimensions, 
+analyzing the weights of the first convolutional layer to visualize the filters, and showing the effect of these filters when applied to the first training example image from the MNIST dataset.
 
 """
 
@@ -30,7 +32,12 @@ def examine_network(model):
     print(model)
 
 def analyze_first_layer(model):
-    """Get the weights of the first convolutional layer and visualize the filters."""
+    """
+    Get the weights of the first convolutional layer and visualize the filters.
+
+    Args:
+    - model: The pre-trained VGG16 model.
+    """
     # VGG16's first conv layer is named features[0]
     weights = model.features[0].weight.data
     print("Shape of weights in the first conv layer:", weights.shape)
@@ -48,8 +55,15 @@ def analyze_first_layer(model):
     plt.show()
 
 def show_filter_effects(model, train_dataset):
+    """
+    Show the effect of the filters applied to the first training example image.
+
+    Args:
+    - model: The pre-trained VGG16 model.
+    - train_dataset: MNIST training dataset.
+    """
     first_image, _ = train_dataset[0]  # Get the first training example image
-    first_image_rgb = first_image.unsqueeze(0)  # Ensure it's in the shape (B, C, H, W)
+    first_image_rgb = first_image.unsqueeze(0)  
 
     # Get the weights of the first conv layer; no need to repeat or unsqueeze
     weights = model.features[0].weight.data
@@ -73,7 +87,7 @@ def show_filter_effects(model, train_dataset):
             # The cmap='gray' is used to display the image in grayscale
             ax.imshow(img, cmap='gray')
             ax.set_title(f'Filter {i+1}')
-            ax.axis('off')  # Hide the axes ticks
+            ax.axis('off')  
 
         plt.tight_layout()  
         plt.show()  
@@ -82,7 +96,7 @@ def show_filter_effects(model, train_dataset):
 
 def main():
     transform = transforms.Compose([
-    transforms.Resize((224, 224)),  # Assuming you want to resize to 224x224
+    transforms.Resize((224, 224)),  
     transforms.Grayscale(num_output_channels=3),  # Convert grayscale to RGB
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),

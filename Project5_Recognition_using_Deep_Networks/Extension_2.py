@@ -3,7 +3,7 @@
 # 5330 Project 5
 
 """
-Purpose:
+Purpose:The purpose of this code is to perform real-time digit recognition using a pre-trained deep neural network model. 
 
 """
 import cv2
@@ -26,6 +26,14 @@ transform = transforms.Compose([
 ])
 
 def preprocess_frame(frame):
+    '''
+    Purpose: Preprocesses a frame to extract digits and bounding box coordinates.
+    Parameters:
+        - frame: A frame from the video feed (numpy array).
+    Returns:
+        - rois: List of region of interest (ROI) images containing digits.
+        - bounding_boxes: List of tuples containing bounding box coordinates (x, y, width, height).
+    '''
     # Apply preprocessing techniques to extract digits from the frame
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
@@ -46,7 +54,14 @@ def preprocess_frame(frame):
 
 
 def recognize_digits(frame):
-    # Preprocess frame to extract digits and bounding box coordinates
+    '''
+    Purpose: Recognizes digits in a frame using a pre-trained model.
+    Parameters:
+        - frame: A frame from the video feed (numpy array).
+    Returns:
+        - recognized_digits: List of recognized digit labels.
+        - bounding_boxes: List of tuples containing bounding box coordinates (x, y, width, height).
+    '''
     rois, bounding_boxes = preprocess_frame(frame)
 
     # Convert each ROI to tensor and apply model

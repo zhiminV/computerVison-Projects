@@ -4,6 +4,8 @@
 
 """
 Purpose:
+This script is designed to examine the trained convolutional neural network (CNN) model, particularly focusing
+on the first layer's filters and their effects on sample images from the MNIST dataset.
 
 """
 
@@ -15,17 +17,41 @@ import torchvision.transforms as transforms
 from torchvision import datasets 
 
 def load_model(model_path='DeepNetwork.pth'):
-    """Load the trained model."""
+    """
+    Load the trained model.
+
+    Parameters:
+    - model_path (str): Path to the saved model file (default: 'DeepNetwork.pth').
+
+    Returns:
+    The loaded neural network model.
+    """
     model = MyNetwork()
     model.load_state_dict(torch.load(model_path))
     return model
 
 def examine_network(model):
-    """Print the model to examine its structure and layer names."""
+    """
+    Print the model to examine its structure and layer names.
+
+    Parameters:
+    - model: The neural network model.
+
+    Returns:
+    None.
+    """
     print(model)
 
 def analyze_first_layer(model):
-    """Get the weights of the first layer (conv1) and visualize the ten filters."""
+    """
+    Get the weights of the first layer (conv1) and visualize the ten filters.
+
+    Parameters:
+    - model: The neural network model.
+
+    Returns:
+    None.
+    """
     weights = model.conv1.weight
     print("Shape of weights in conv1 layer:", weights.shape)
     fig, axes = plt.subplots(2, 5, figsize=(12, 6))
@@ -38,7 +64,16 @@ def analyze_first_layer(model):
     plt.show()
 
 def show_filter_effects(model, train_dataset):
-    """Show the effect of the filters applied to the first training example image."""
+    """
+    Show the effect of the filters applied to the first training example image.
+
+    Parameters:
+    - model: The neural network model.
+    - train_dataset: The MNIST training dataset.
+
+    Returns:
+    None.
+    """
     first_image, _ = train_dataset[0]  # Get the first training example image
     first_image = first_image.unsqueeze(0)  # Add batch dimension
     weights = model.conv1.weight
@@ -60,8 +95,7 @@ def show_filter_effects(model, train_dataset):
     plt.show()
 
 def main():
-    
-   # Import the MNIST dataset
+    # Import the MNIST dataset
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
     train_dataset = datasets.MNIST(root='./data', train=True, transform=transform, download=True)
     

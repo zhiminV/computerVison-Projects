@@ -22,6 +22,17 @@ import torchvision.transforms as transforms
 
 # Class definitions
 class MyNetwork(nn.Module):
+    """
+    Purpose:
+    Defines the architecture of the neural network model.
+
+    Description:
+    This class defines a convolutional neural network (CNN) model for digit recognition. It consists
+    of two convolutional layers with max-pooling, followed by two fully connected layers. ReLU activation
+    functions are applied after each convolutional layer, and a dropout layer is added before the second
+    fully connected layer. The output layer produces log probabilities using a softmax function.
+    """
+     
     def __init__(self):
         super(MyNetwork, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5)
@@ -42,6 +53,21 @@ class MyNetwork(nn.Module):
 
 # Training function with improvements
 def train_model(model, train_loader, test_loader, num_epochs=5, learning_rate=0.001):
+    """
+    Purpose:
+    Trains the neural network model.
+
+    Parameters:
+    - model: The neural network model.
+    - train_loader: DataLoader for the training dataset.
+    - test_loader: DataLoader for the testing dataset.
+    - num_epochs: Number of training epochs (default: 5).
+    - learning_rate: Learning rate for the optimizer (default: 0.001).
+
+    Returns:
+    Four lists containing training losses, testing losses, training accuracies, and testing accuracies
+    for each epoch.
+    """
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
@@ -97,6 +123,17 @@ def train_model(model, train_loader, test_loader, num_epochs=5, learning_rate=0.
     return train_losses, test_losses, train_accuracy, test_accuracy
 
 def plot_errors(train_losses, test_losses):
+    """
+    Purpose:
+    Plots the training and testing losses.
+
+    Parameters:
+    - train_losses: List of training losses for each epoch.
+    - test_losses: List of testing losses for each epoch.
+
+    Returns:
+    None.
+    """
     plt.plot(train_losses, label='Training Loss')
     plt.plot(test_losses, label='Testing Loss')
     plt.xlabel('Epoch')
@@ -106,6 +143,17 @@ def plot_errors(train_losses, test_losses):
     plt.show()
 
 def plot_accuracy(train_accuracy, test_accuracy):
+    """
+    Purpose:
+    Plots the training and testing accuracies.
+
+    Parameters:
+    - train_accuracy: List of training accuracies for each epoch.
+    - test_accuracy: List of testing accuracies for each epoch.
+
+    Returns:
+    None.
+    """
     plt.plot(train_accuracy, label='Training Accuracy', color='blue')
     plt.plot(test_accuracy, label='Testing Accuracy', color='orange')
     plt.xlabel('Epoch')
@@ -115,10 +163,30 @@ def plot_accuracy(train_accuracy, test_accuracy):
     plt.show()
 
 def get_mnist_test_set():
+    """
+    Purpose:
+    Retrieves the MNIST test dataset.
+
+    Parameters:
+    None.
+
+    Returns:
+    The MNIST test dataset.
+    """
     mnist_test = datasets.MNIST(root='./data', train=False, download=True)
     return mnist_test
 
 def plot_random_six_digits(test_set):
+    """
+    Purpose:
+    Plots six random digits from the test dataset.
+
+    Parameters:
+    - test_set: The MNIST test dataset.
+
+    Returns:
+    None.
+    """
     indices = random.sample(range(len(test_set)), 6)
     images = [test_set[i][0] for i in indices]
     labels = [test_set[i][1] for i in indices]
@@ -130,6 +198,8 @@ def plot_random_six_digits(test_set):
     plt.tight_layout()
     plt.show()
 
+ 
+# Saves the trained model to a file.
 def save_model(model, file_path='model.pth'):
     torch.save(model.state_dict(), file_path)
 

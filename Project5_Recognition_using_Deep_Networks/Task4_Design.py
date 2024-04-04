@@ -3,7 +3,8 @@
 # 5330 Project 5
 
 """
-Purpose:
+Purpose:The purpose of this script is to perform an experiment to evaluate the performance of a convolutional neural network (CNN) architecture on the FashionMNIST dataset. The script explores different configurations of the CNN architecture by varying the number of convolutional layers, filter sizes, and the number of filters. 
+
 
 """
 import torch
@@ -18,6 +19,17 @@ import time
 
 class MyCNN(nn.Module):
     def __init__(self, num_conv_layers, filter_size, num_filters):
+        """
+        Define a flexible CNN architecture with customizable parameters.
+
+        Args:
+        - num_conv_layers (int): Number of convolutional layers.
+        - filter_size (int): Size of the convolutional filters.
+        - num_filters (int): Number of filters in each convolutional layer.
+
+        Returns:
+        A CNN model with the specified architecture.
+        """
         super(MyCNN, self).__init__()
         self.conv_layers = nn.ModuleList()
         in_channels = 1
@@ -47,6 +59,17 @@ class MyCNN(nn.Module):
 
 # Function to train the model
 def train_model(model, train_loader, epochs=5):
+    """
+    Train the CNN model using the FashionMNIST dataset.
+
+    Args:
+    - model (nn.Module): The CNN model to be trained.
+    - train_loader (DataLoader): DataLoader for the training dataset.
+    - epochs (int): Number of training epochs (default: 5).
+
+    Returns:
+    List of training losses for each epoch.
+    """
     criterion = nn.CrossEntropyLoss()
     optimizer = Adam(model.parameters(), lr=0.001)
     losses = []

@@ -3,7 +3,7 @@
 # 5330 Project 5
 
 """
-Purpose:
+Purpose:The goal of this step is to re-use the the MNIST digit recognition network you built in step 1 to recognize three different greek letters: alpha, beta, and gamma. 
 
 """
 
@@ -29,24 +29,58 @@ class GreekTransform:
         return torchvision.transforms.functional.invert(x)
 
 def load_pretrained_model(model_path='DeepNetwork.pth'):
-    """Load the trained model from a file."""
+    """
+    Load the trained model from a file.
+
+    Parameters:
+    - model_path (str): Path to the saved model file (default: 'DeepNetwork.pth').
+
+    Returns:
+    The loaded neural network model.
+    """
     model = MyNetwork()
     model.load_state_dict(torch.load(model_path))
     return model
 
 def freeze_weights(model):
-    """Freeze the network weights."""
+    """
+    Freeze the network weights.
+
+    Parameters:
+    - model: The neural network model.
+
+    Returns:
+    None.
+    """
     for param in model.parameters():
         param.requires_grad = False
 
 def replace_last_layer(model):
-    """Replace the last layer with a new Linear layer with three nodes."""
+    """
+    Replace the last layer with a new Linear layer with three nodes.
+
+    Parameters:
+    - model: The neural network model.
+
+    Returns:
+    The modified neural network model.
+    """
     model.fc2 = nn.Linear(50, 3)  # Replace the last layer with three nodes
     return model
 
 
 def train_model(model, train_loader, epochs=10):
-    """Train the modified network on the Greek letter dataset."""
+    """
+    Train the modified network on the Greek letter dataset.
+
+    Parameters:
+    - model: The neural network model.
+    - train_loader: DataLoader for the training dataset.
+    - epochs (int): Number of training epochs (default: 10).
+
+    Returns:
+    List of training losses over epochs.
+    """
     criterion = nn.CrossEntropyLoss()
     optimizer = Adam(model.parameters(), lr=0.001)
     losses = []
@@ -76,7 +110,15 @@ def train_model(model, train_loader, epochs=10):
 
 
 def plot_training_loss(losses):
-    """Plot the training loss over epochs."""
+    """
+    Plot the training loss over epochs.
+
+    Parameters:
+    - losses: List of training losses over epochs.
+
+    Returns:
+    None.
+    """
     plt.plot(losses)
     plt.xlabel('Epoch')
     plt.ylabel('Training Loss')
@@ -84,9 +126,29 @@ def plot_training_loss(losses):
     plt.show()
 
 def save_model(model, file_path='model.pth'):
+    """
+    Save the trained model to a file.
+
+    Parameters:
+    - model: The trained neural network model.
+    - file_path (str): Path to save the model file (default: 'model.pth').
+
+    Returns:
+    None.
+    """
     torch.save(model.state_dict(), file_path)
 
 def test_symbols(model, test_loader):
+    """
+    Test the model on the Greek letter symbols and display the results.
+
+    Parameters:
+    - model: The trained neural network model.
+    - test_loader: DataLoader for the testing dataset.
+
+    Returns:
+    None.
+    """
     correct = 0
     total = 0
     with torch.no_grad():
@@ -142,9 +204,6 @@ def main():
     # Step 9: Print out the modified network
     print("Modified network structure:")
     print(model)
-
-    # model.eval()
-
 
     # Step 10: Test handwritten symbols
     testing_set_path = 'greek_test'
