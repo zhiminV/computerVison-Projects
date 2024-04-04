@@ -10,7 +10,7 @@ of convolutional neural networks (CNNs). It covers data preprocessing, model arc
 training, and evaluation. Additionally, it provides functionality to save the trained model.
 """
 
-# import statements
+# Import statements
 import sys
 import random
 import torchvision.datasets as datasets
@@ -19,16 +19,18 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchvision.transforms as transforms
+import cv2  
+import numpy as np 
 
-# Class definitions
+# Define the network class
 class MyNetwork(nn.Module):
     def __init__(self):
         super(MyNetwork, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5)
-        self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)  
         self.conv2 = nn.Conv2d(in_channels=10, out_channels=20, kernel_size=5)
         self.dropout = nn.Dropout(p=0.5)
-        self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)  
         self.fc1 = nn.Linear(in_features=320, out_features=50)
         self.fc2 = nn.Linear(in_features=50, out_features=10)
 
@@ -40,120 +42,71 @@ class MyNetwork(nn.Module):
         x = self.fc2(self.dropout(x))
         return nn.functional.log_softmax(x, dim=1)
 
-# Training function with improvements
-def train_model(model, train_loader, test_loader, num_epochs=5, learning_rate=0.001):
+# Function to generate Gabor filter bank
+def gabor_filter_bank(size=28, num_orientations=8, num_scales=5):
+    filters = []
+    for theta in range(num_orientations):
+        theta = theta / num_orientations * np.pi
+        for sigma in (1, 3):
+            for freq in (0.1, 0.2):
+                kernel = cv2.getGaborKernel((size, size), sigma, theta, freq, 0.5, 0, ktype=cv2.CV_32F)
+                filters.append(kernel)
+    return filters
+
+# Replace first layer with Gabor filter bank
+def replace_first_layer(model, filter_bank):
+    weights = torch.tensor(np.array(filter_bank)).unsqueeze(1)
+    num_output_channels = 10  
+    model.conv1 = nn.Conv2d(in_channels=1, out_channels=num_output_channels, kernel_size=3, stride=1, padding=1, bias=False)
+    with torch.no_grad():
+        model.conv1.weight = nn.Parameter(weights)
+
+# Retrain network while holding first layer constant
+def retrain_network(model, train_loader, num_epochs=5):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
-    
-    train_losses = []
-    test_losses = []
-    train_accuracy = []
-    test_accuracy = []
-    
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+    # Set the first layer to be non-trainable
+    for param in model.conv1.parameters():
+        param.requires_grad = False
+
+    # Training loop
     for epoch in range(num_epochs):
-        # Training
-        model.train()
-        correct_train = 0
-        total_train = 0
         running_loss = 0.0
         for inputs, labels in train_loader:
-            inputs = inputs + torch.randn_like(inputs) * 0.1  # Adding random noise for data augmentation
             optimizer.zero_grad()
             outputs = model(inputs)
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
-            _, predicted = torch.max(outputs, 1)
-            total_train += labels.size(0)
-            correct_train += (predicted == labels).sum().item()
             running_loss += loss.item()
-        train_losses.append(running_loss / len(train_loader))
-        train_accuracy.append(correct_train / total_train)
+        print(f"Epoch {epoch+1}, Loss: {running_loss/len(train_loader)}")
 
-        # Testing
-        model.eval()
-        correct_test = 0
-        total_test = 0
-        running_loss = 0.0
-        with torch.no_grad():
-            for inputs, labels in test_loader:
-                outputs = model(inputs)
-                loss = criterion(outputs, labels)
-                _, predicted = torch.max(outputs, 1)
-                total_test += labels.size(0)
-                correct_test += (predicted == labels).sum().item()
-                running_loss += loss.item()
-            test_losses.append(running_loss / len(test_loader))
-            test_accuracy.append(correct_test / total_test)
-        
-        scheduler.step()  # Adjust learning rate
-        print(f'Epoch [{epoch+1}/{num_epochs}], '
-              f'Train Loss: {train_losses[-1]:.4f}, '
-              f'Train Acc: {train_accuracy[-1]*100:.2f}%, '
-              f'Test Loss: {test_losses[-1]:.4f}, '
-              f'Test Acc: {test_accuracy[-1]*100:.2f}%')
-
-    return train_losses, test_losses, train_accuracy, test_accuracy
-
-def plot_errors(train_losses, test_losses):
-    plt.plot(train_losses, label='Training Loss')
-    plt.plot(test_losses, label='Testing Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.title('Training and Testing Loss')
-    plt.legend()
-    plt.show()
-
-def plot_accuracy(train_accuracy, test_accuracy):
-    plt.plot(train_accuracy, label='Training Accuracy', color='blue')
-    plt.plot(test_accuracy, label='Testing Accuracy', color='orange')
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy')
-    plt.title('Training and Testing Accuracy')
-    plt.legend()
-    plt.show()
-
-def get_mnist_test_set():
-    mnist_test = datasets.MNIST(root='./data', train=False, download=True)
-    return mnist_test
-
-def plot_random_six_digits(test_set):
-    indices = random.sample(range(len(test_set)), 6)
-    images = [test_set[i][0] for i in indices]
-    labels = [test_set[i][1] for i in indices]
-    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(10, 5))
-    for i, ax in enumerate(axes.flat):
-        ax.imshow(images[i], cmap='gray')
-        ax.set_title(f'Label: {labels[i]}')
-        ax.axis('off')
-    plt.tight_layout()
-    plt.show()
-
-def save_model(model, file_path='model.pth'):
-    torch.save(model.state_dict(), file_path)
-
+# Main function
 def main(argv):
-    mnist_test_set = get_mnist_test_set()
-    plot_random_six_digits(mnist_test_set)
-
+    # Define transformations
     transform = transforms.Compose([
-        transforms.RandomRotation(10),  # Randomly rotate images by 10 degrees
         transforms.ToTensor(),
         transforms.Normalize((0.5,), (0.5,))
     ])
+    
+    # Load MNIST data
     train_dataset = datasets.MNIST(root='./data', train=True, transform=transform, download=True)
     test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=True)
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=True)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=64, shuffle=False)
 
+    # Create network model
     model = MyNetwork()
-    train_losses, test_losses, train_accuracy, test_accuracy = train_model(model, train_loader, test_loader)
-    plot_errors(train_losses, test_losses)
-    plot_accuracy(train_accuracy, test_accuracy)
 
-    save_model(model, 'DeepNetwork.pth')
-    print("Model saved successfully.")
+    # Generate Gabor filter bank
+    gabor_filters = gabor_filter_bank()  
+
+    # Replace first layer with Gabor filter bank
+    replace_first_layer(model, gabor_filters)
+
+    # Retrain network while holding first layer constant
+    retrain_network(model, train_loader, num_epochs=5)  
 
 if __name__ == "__main__":
     main(sys.argv)
